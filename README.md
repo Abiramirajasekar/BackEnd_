@@ -1,3 +1,3 @@
 ﻿# Backend_login_signup
- Backend Api for User Credential usin MOngoDB,NodeMailer,JWT
+ Backend Api for User Credential using MongoDB,NodeMailer and JWT
 
