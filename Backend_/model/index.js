@@ -6,6 +6,11 @@ const UserSchema = new mongoose.Schema({
     restPasswordToken:String,
     restPasswordExpires:Date,
 })
-const User = mongoose.model("user",UserSchema)
 
+// const resetSchema = new mongoose.Schema({
+//     email:String
+// })
+
+const User = mongoose.model("user",UserSchema)
+// const Reset = mongoose.model("reset",resetSchema)
 module.exports = User
