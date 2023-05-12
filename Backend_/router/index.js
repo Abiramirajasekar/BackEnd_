@@ -15,6 +15,7 @@ router.post("/user",async(req,res)=>{
     if(!user){
     const hashedPassword = await bcrypt.hash(password,10)
     const newUser = new User({email,password:hashedPassword})
+
     await newUser.save()
     return res.json({message:"Successfully Created!"})
     }
@@ -60,7 +61,8 @@ router.post("/reset-password",async(req,res)=>{
         from:"abiramirajasekar002@gmail.com",
         to:user.email,
         subject:"Password reset request",
-        text:`You are reciving this email because you(or someone else)has requested a password reset for your account. \n\n please use the following token to rest your password ${token}.If you did not request a password reset,Please ignore this mail.\n\n Thank you!`
+        text:`You are reciving this email because you(or someone else)has requested a password reset for your account.\n\n please use the following token to rest your password ${token}.If you did not request a password reset,Please ignore this mail.\n\n Thank you!`
+        
     }
     transporter.sendMail(message,(err,info)=>{
         if(err){
@@ -71,9 +73,11 @@ router.post("/reset-password",async(req,res)=>{
 })
 
 router.post("/reset-password/:token",async(req,res)=>{
+    // const{email} = req.body;
     const {token}=req.params;
     const {password} = req.body;
-    const user = User.findOne({
+    
+    const user = await User.findOne({
         restPasswordToken:token,
         restPasswordExpires:{$gt:Date.now()},
     })
@@ -81,11 +85,12 @@ router.post("/reset-password/:token",async(req,res)=>{
         res.status(404).json({message:"Invalid token"})
     }
     const hashedPassword = await bcrypt.hash(password,10);
+    // const newUser = new User({password:hashedPassword})
+    // console.log("password:",newUser)
     user.password  = hashedPassword 
     user.restPasswordToken = null;
     user.restPasswordExpires = null;
-    // await user.save()
-
+    await user.save()
     res.json({message:"Password reset successfully"})
 })
 module.exports = router

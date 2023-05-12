@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
     password:String,
     restPasswordToken:String,
     restPasswordExpires:Date,
+    
 })
 
 // const resetSchema = new mongoose.Schema({
